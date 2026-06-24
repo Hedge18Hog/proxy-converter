@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "proxy-converter"
+version = "0.1.0"
+description = "Parse any common proxy-string format and hand it to the major HTTP/SOCKS libraries."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "HedgeHog" }]
+keywords = ["proxy", "socks5", "socks5h", "socks", "socks4", "socks4h", "converver", "http-proxy", "aiohttp", "requests", "parser"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: Proxy Servers",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+# Convenience extras for the adapters; the core needs none of these.
+aiohttp = ["aiohttp-socks"]
+python-socks = ["python-socks"]
+
+[dependency-groups]
+dev = ["pytest", "aiohttp-socks", "python-socks", "aiohttp"]
+
+[project.urls]
+Homepage = "https://github.com/Hedge18Hog/proxy-converter"
+Repository = "https://github.com/Hedge18Hog/proxy-converter"
+Issues = "https://github.com/Hedge18Hog/proxy-converter/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["proxy_converter"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "proxy_converter"]
+addopts = "--doctest-modules --import-mode=importlib"
