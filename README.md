@@ -28,7 +28,7 @@ from proxy_converter import parse_proxy
 proxy = parse_proxy("1.2.3.4:1080:user:pass", default_scheme="socks5")
 
 proxy.to_url()              # "socks5://user:pass@1.2.3.4:1080"   -> httpx / requests
-proxy.to_aiohttp_socks()   # ready aiohttp_socks.ProxyConnector
+proxy.to_aiohttp_socks()    # ready aiohttp_socks.ProxyConnector
 proxy.host, proxy.port      # ("1.2.3.4", 1080)
 ```
 
@@ -192,12 +192,17 @@ policy:
 ```python
 from proxy_converter import parse_many
 
-proxies = parse_many(lines, default_scheme="socks5")                    # raise on first bad line
-proxies = parse_many(lines, default_scheme="socks5", on_error="skip")   # drop bad lines
-ok, errors = parse_many(lines, default_scheme="socks5", on_error="collect")  # (parsed, [(index, line, exc), ...])
+# raise on first bad line
+proxies = parse_many(lines, default_scheme="socks5")
+
+# drop bad lines
+proxies = parse_many(lines, default_scheme="socks5", on_error="skip")
+
+# (parsed, [(index, line, exc), ...])
+ok, errors = parse_many(lines, default_scheme="socks5", on_error="collect")  
 ```
 
-It is fast — ~650k lines/sec on a laptop (~1.5 µs per line).
+It is fast — ~650k lines/sec (~1.5 µs per line) on an Apple M4, CPython 3.12.
 
 ## License
 
