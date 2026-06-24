@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: Proxy Servers",
     "Typing :: Typed",
 ]
@@ -31,7 +32,7 @@ aiohttp = ["aiohttp-socks"]
 python-socks = ["python-socks"]
 
 [dependency-groups]
-dev = ["pytest", "aiohttp-socks", "python-socks", "aiohttp"]
+dev = ["pytest", "ruff", "aiohttp-socks", "python-socks", "aiohttp"]
 
 [project.urls]
 Homepage = "https://github.com/Hedge18Hog/proxy-converter"
@@ -44,3 +45,19 @@ packages = ["proxy_converter"]
 [tool.pytest.ini_options]
 testpaths = ["tests", "proxy_converter"]
 addopts = "--doctest-modules --import-mode=importlib"
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
+fixable = ["ALL"]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

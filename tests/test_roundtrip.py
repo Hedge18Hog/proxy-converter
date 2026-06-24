@@ -34,11 +34,11 @@ def test_roundtrip_preserves_credentials_verbatim():
 @pytest.mark.parametrize(
     "raw,expected_url",
     [
-        ("1.2.3.4:1080@user:pass", "socks5://user:pass@1.2.3.4:1080"),     # reversed
-        ("1.2.3.4:1080:user:pass", "socks5://user:pass@1.2.3.4:1080"),     # proxy-list
-        ("user:pass|1.2.3.4:1080", "socks5://user:pass@1.2.3.4:1080"),     # pipe
+        ("1.2.3.4:1080@user:pass", "socks5://user:pass@1.2.3.4:1080"),  # reversed
+        ("1.2.3.4:1080:user:pass", "socks5://user:pass@1.2.3.4:1080"),  # proxy-list
+        ("user:pass|1.2.3.4:1080", "socks5://user:pass@1.2.3.4:1080"),  # pipe
         ("socks5h://1.2.3.4:1080@user:pass", "socks5h://user:pass@1.2.3.4:1080"),
-        ("HTTP://1.2.3.4:8080", "http://1.2.3.4:8080"),                    # scheme case
+        ("HTTP://1.2.3.4:8080", "http://1.2.3.4:8080"),  # scheme case
     ],
 )
 def test_non_canonical_normalizes_to_expected_url(raw, expected_url):

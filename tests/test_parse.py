@@ -6,8 +6,24 @@ from proxy_converter import ProxyParseError, parse_proxy
 
 # (input, proxy_type, host, port, username, password, rdns)
 FORMATS = [
-    ("socks5://user:pass@1.2.3.4:1080", "socks5", "1.2.3.4", 1080, "user", "pass", False),
-    ("socks5://1.2.3.4:1080@user:pass", "socks5", "1.2.3.4", 1080, "user", "pass", False),
+    (
+        "socks5://user:pass@1.2.3.4:1080",
+        "socks5",
+        "1.2.3.4",
+        1080,
+        "user",
+        "pass",
+        False,
+    ),
+    (
+        "socks5://1.2.3.4:1080@user:pass",
+        "socks5",
+        "1.2.3.4",
+        1080,
+        "user",
+        "pass",
+        False,
+    ),
     ("http://1.2.3.4:8080", "http", "1.2.3.4", 8080, None, None, False),
     ("http://1.2.3.4:1080:user:pass", "http", "1.2.3.4", 1080, "user", "pass", False),
     ("user:pass@1.2.3.4:1080", "socks5", "1.2.3.4", 1080, "user", "pass", False),
@@ -15,7 +31,15 @@ FORMATS = [
     ("1.2.3.4:1080", "socks5", "1.2.3.4", 1080, None, None, False),
     ("1.2.3.4:1080:user:pass", "socks5", "1.2.3.4", 1080, "user", "pass", False),
     # pipe alias (9-11)
-    ("socks5://user:pass|1.2.3.4:1080", "socks5", "1.2.3.4", 1080, "user", "pass", False),
+    (
+        "socks5://user:pass|1.2.3.4:1080",
+        "socks5",
+        "1.2.3.4",
+        1080,
+        "user",
+        "pass",
+        False,
+    ),
     ("user:pass|1.2.3.4:1080", "socks5", "1.2.3.4", 1080, "user", "pass", False),
     ("1.2.3.4:1080|user:pass", "socks5", "1.2.3.4", 1080, "user", "pass", False),
 ]
@@ -66,9 +90,9 @@ def test_explicit_scheme_overrides_default():
 
 
 def test_pipe_equals_at():
-    assert parse_proxy("user:pass|1.2.3.4:1080", default_scheme="socks5") == parse_proxy(
-        "user:pass@1.2.3.4:1080", default_scheme="socks5"
-    )
+    assert parse_proxy(
+        "user:pass|1.2.3.4:1080", default_scheme="socks5"
+    ) == parse_proxy("user:pass@1.2.3.4:1080", default_scheme="socks5")
 
 
 def test_whitespace_is_stripped():
@@ -116,7 +140,9 @@ class TestAmbiguityTieBreak:
 
     def test_both_bracketed_is_ambiguous(self):
         with pytest.raises(ProxyParseError, match="ambiguous"):
-            parse_proxy("[2001:db8::1]:1080@[2001:db8::2]:8080", default_scheme="socks5")
+            parse_proxy(
+                "[2001:db8::1]:1080@[2001:db8::2]:8080", default_scheme="socks5"
+            )
 
     def test_both_ips_fall_back_to_standard_order(self):
         # documented limitation: both sides are IPs -> standard creds@host:port
@@ -136,14 +162,14 @@ class TestErrors:
         [
             "",
             "   ",
-            "ftp://1.2.3.4:1080",          # bad scheme
-            "socks5://1.2.3.4",            # missing port
-            "socks5://1.2.3.4:99999",      # port out of range
-            "socks5://1.2.3.4:0",          # port 0
-            "1.2.3.4:1080:user",           # 3 segments
-            "1.2.3.4:1080:user:pass:more", # 5 segments
-            "user:pass@host|1.2.3.4:1080", # @ and | together
-            "host:port",                   # non-numeric port
+            "ftp://1.2.3.4:1080",  # bad scheme
+            "socks5://1.2.3.4",  # missing port
+            "socks5://1.2.3.4:99999",  # port out of range
+            "socks5://1.2.3.4:0",  # port 0
+            "1.2.3.4:1080:user",  # 3 segments
+            "1.2.3.4:1080:user:pass:more",  # 5 segments
+            "user:pass@host|1.2.3.4:1080",  # @ and | together
+            "host:port",  # non-numeric port
         ],
     )
     def test_raises_proxy_parse_error(self, raw):

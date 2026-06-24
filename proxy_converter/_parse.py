@@ -154,9 +154,7 @@ def _split_authority(
             left, left_endpoint, right, right_endpoint
         )
     else:
-        raise ProxyParseError(
-            f"no valid host:port on either side of {separator!r}"
-        )
+        raise ProxyParseError(f"no valid host:port on either side of {separator!r}")
 
     username, password = _split_credentials(credentials, strip=strip)
     return host, port, username, password
@@ -315,10 +313,7 @@ def parse_many(
     *,
     on_error: str = "raise",
     strip_credentials: bool = True,
-) -> (
-    list[ProxyInfo]
-    | tuple[list[ProxyInfo], list[tuple[int, str, ProxyParseError]]]
-):
+) -> list[ProxyInfo] | tuple[list[ProxyInfo], list[tuple[int, str, ProxyParseError]]]:
     """Parse many proxy strings in one pass (for large proxy lists).
 
     Args:
@@ -344,13 +339,17 @@ def parse_many(
     """
     parse = parse_proxy  # local binding trims attribute lookups in the loop
     if on_error == "raise":
-        return [parse(line, default_scheme, strip_credentials=strip_credentials)
-                for line in lines]
+        return [
+            parse(line, default_scheme, strip_credentials=strip_credentials)
+            for line in lines
+        ]
     if on_error == "skip":
         parsed: list[ProxyInfo] = []
         for line in lines:
             try:
-                parsed.append(parse(line, default_scheme, strip_credentials=strip_credentials))
+                parsed.append(
+                    parse(line, default_scheme, strip_credentials=strip_credentials)
+                )
             except ProxyParseError:
                 continue
         return parsed
@@ -359,7 +358,9 @@ def parse_many(
         errors: list[tuple[int, str, ProxyParseError]] = []
         for index, line in enumerate(lines):
             try:
-                parsed.append(parse(line, default_scheme, strip_credentials=strip_credentials))
+                parsed.append(
+                    parse(line, default_scheme, strip_credentials=strip_credentials)
+                )
             except ProxyParseError as exc:
                 errors.append((index, line, exc))
         return parsed, errors

@@ -9,14 +9,14 @@ SECRET = "hunter2SuperSecret"
 # Malformed inputs that embed the secret in a credential (or credential-adjacent)
 # position. None of them parse; none must echo the secret in the exception text.
 LEAKY_INPUTS = [
-    f"user:{SECRET}@badhost",            # no valid host:port either side
-    f"user:{SECRET}|1.2.3.4:1080@x",     # both separators
-    f"1.2.3.4:1080:user:{SECRET}:extra", # 5 segments -> unrecognized
-    f"[2001:db8::1]:1080:user:{SECRET}", # malformed bracketed
-    f"host:{SECRET}",                    # non-numeric port slot
-    f"1.2.3.4:{SECRET}:user:pass",       # non-numeric port in proxy-list
-    f"user:{SECRET}@5.6.7.8:99999",      # creds present; both sides invalid
-    f"1.2.3.4:1080:user:{SECRET[:4]}:x", # password-with-colon overflow
+    f"user:{SECRET}@badhost",  # no valid host:port either side
+    f"user:{SECRET}|1.2.3.4:1080@x",  # both separators
+    f"1.2.3.4:1080:user:{SECRET}:extra",  # 5 segments -> unrecognized
+    f"[2001:db8::1]:1080:user:{SECRET}",  # malformed bracketed
+    f"host:{SECRET}",  # non-numeric port slot
+    f"1.2.3.4:{SECRET}:user:pass",  # non-numeric port in proxy-list
+    f"user:{SECRET}@5.6.7.8:99999",  # creds present; both sides invalid
+    f"1.2.3.4:1080:user:{SECRET[:4]}:x",  # password-with-colon overflow
 ]
 
 # Special characters that must survive parsing and never leak in error text.

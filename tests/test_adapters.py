@@ -52,7 +52,9 @@ class TestToNativeAiohttp:
 class TestToPythonSocksKwargs:
     def test_socks5h_maps_to_base_type_plus_rdns(self):
         ps = pytest.importorskip("python_socks")
-        kwargs = parse_proxy("socks5h://user:pass@1.2.3.4:1080").to_python_socks_kwargs()
+        kwargs = parse_proxy(
+            "socks5h://user:pass@1.2.3.4:1080"
+        ).to_python_socks_kwargs()
         assert kwargs == {
             "proxy_type": ps.ProxyType.SOCKS5,
             "host": "1.2.3.4",

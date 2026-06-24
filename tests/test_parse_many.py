@@ -34,7 +34,9 @@ def test_collect_mode_returns_parsed_and_errors():
 
 
 def test_collect_mode_all_good_has_empty_errors():
-    parsed, errors = parse_many(["1.2.3.4:1080"], default_scheme="socks5", on_error="collect")
+    parsed, errors = parse_many(
+        ["1.2.3.4:1080"], default_scheme="socks5", on_error="collect"
+    )
     assert len(parsed) == 1
     assert errors == []
 
